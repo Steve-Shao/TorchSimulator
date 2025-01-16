@@ -1,0 +1,14 @@
+{
+  "class_no": 17,
+  "num_interval": 204,
+  "num_iterations":1000,
+  "lambda_path": "configs/call_center/config_17dim/main_test_total_arrivals_partial_5min.csv",
+  "agents_path": "configs/call_center/config_17dim/main_test_agents.csv",
+  "mu_hourly_path": "configs/call_center/config_17dim/mu_hourly_17dim.csv",
+  "theta_hourly_path": "configs/call_center/config_17dim/theta_hourly_17dim.csv",
+  "arr_cdf_path": "configs/call_center/config_17dim/cdf_17dim.csv",
+  "holding_cost_rate_path": "configs/call_center/config_17dim/hourly_holding_cost_17dim.csv",
+  "abandonment_cost_rate_path": "configs/call_center/config_17dim/abandonment_cost_17dim.csv",
+  "cost_rate_path": "configs/call_center/config_17dim/hourly_total_cost_17dim.csv",
+  "initialization_path": "configs/call_center/config_17dim/initialization_17dim.csv"
+}
