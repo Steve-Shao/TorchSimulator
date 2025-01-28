@@ -1,6 +1,19 @@
 # TorchSimulator
 
-TorchSimulator is a demonstration framework designed to showcase how parallel, **tensorized simulations on GPUs** can accelerate performance. It provides a foundation for building custom simulation classes by allowing users to inherit from the provided `CTMCSimulator` or `CTMDPSimulator` classes.
+TorchSimulator is a demonstration framework designed to showcase how parallel, **tensorized simulations on GPUs** can accelerate performance. It provides a foundation for building custom simulation classes by allowing users to inherit from the provided `CTMCSimulator` or `CTMDPSimulator` classes. 
+
+➔ **Massively Parallel Processing**  
+   - Vectorized operations across millions of paths  
+   - Tensor-based event handling (GPUs)  
+   - Dynamic masking for divergent path states  
+
+➔ **Key Challenges Addressed**  
+1. **Multi-Event Handling**  
+   - All paths evaluate *all* event rates simultaneously  
+   - Masked min-reduction selects fastest valid event per path  
+2. **Variable-Length Simulations**  
+   - Active path masking for time/step targets  
+   - Gradual freezing of completed paths  
 
 
 ## Tutorial
@@ -38,6 +51,47 @@ python -m simulator.ctmc_base
 python -m simulator.ctmdp_base
 python -m simulator.ctmc_examples.mm1_queue
 ```
+
+## Core Architecture
+
+### CTMC vs CTMDP Comparison: 
+
+| Feature          | CTMC               | CTMDP              |
+|------------------|--------------------|--------------------|
+| **Rate Basis**   | State              | State + Action     |
+| **Decision**     | Event occurrence  | Action + Event     |
+| **History**      | States, Times      | + Rewards          |
+| **Key Tensors**  | `states`, `rates`  | + `actions`, `rewards` |
+
+### CTMDP-Specific Mechanics:
+
+```text
+CTMDP Execution Flow:
+1. [Action Selection] ➔ 2. [Rate Calculation]  
+                      ➔ 3. [Reward Calculation]  
+4. [Event Processing] ➔ 5. [State Updates]
+```
+
+### Critical Extensions in CTMDP:  
+
+✓ **Action Policy** (`_update_actions()`):  
+   - Must produce valid actions for active paths  
+   - Actions influence subsequent rate calculations  
+
+✓ **Reward System** (`_update_rewards()`):  
+   - Immediate + cumulative reward tracking  
+   - Dependent on state-action pairs  
+
+✓ **Action-Aware Rates**:  
+   - Rate calculations now accept action tensor  
+   - Requires broadcasting over action dimensions  
+
+
+
+
+
+
+
 
 ## License
 
